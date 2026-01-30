@@ -2,9 +2,20 @@
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  type?: string;
 }
 
-const { title, description = "Site dedicat rasei Wyandotte în România" } = Astro.props;
+const {
+  title,
+  description = "Site dedicat rasei Wyandotte în România",
+  image = "/images/cropped-Logopit_1592492900675-1.png",
+  type = "website"
+} = Astro.props;
+
+const siteUrl = "https://wyandotte.ro";
+const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const fullImageUrl = new URL(image, siteUrl);
 ---
 
 <!DOCTYPE html>
@@ -12,9 +23,69 @@ const { title, description = "Site dedicat rasei Wyandotte în România" } = Ast
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content={description}>
+
+  <!-- Primary Meta Tags -->
   <title>{title} | Wyandotte România</title>
+  <meta name="title" content={`${title} | Wyandotte România`}>
+  <meta name="description" content={description}>
+  <meta name="keywords" content="Wyandotte, pui Wyandotte, găini Wyandotte, rase găini, avicultură România, Silver Laced, Golden Laced, expoziții avicole">
+  <link rel="canonical" href={canonicalURL}>
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={type}>
+  <meta property="og:url" content={canonicalURL}>
+  <meta property="og:title" content={`${title} | Wyandotte România`}>
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={fullImageUrl}>
+  <meta property="og:locale" content="ro_RO">
+  <meta property="og:site_name" content="Wyandotte România">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content={canonicalURL}>
+  <meta property="twitter:title" content={`${title} | Wyandotte România`}>
+  <meta property="twitter:description" content={description}>
+  <meta property="twitter:image" content={fullImageUrl}>
+
+  <!-- Favicon -->
   <link rel="icon" type="image/png" href="/images/cropped-Logopit_1592492900675-1.png">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TMNKFYR9EX"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TMNKFYR9EX');
+  </script>
+
+  <!-- Additional SEO -->
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="Romanian">
+  <meta name="author" content="Wyandotte România">
+
+  <!-- JSON-LD Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": type === "article" ? "Article" : "WebPage",
+    "headline": title,
+    "description": description,
+    "image": fullImageUrl.toString(),
+    "url": canonicalURL.toString(),
+    "inLanguage": "ro",
+    "author": {
+      "@type": "Organization",
+      "name": "Wyandotte România"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Wyandotte România",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${siteUrl}/images/cropped-Logopit_1592492900675-1.png`
+      }
+    }
+  })} />
 </head>
 <body>
   <header>

@@ -1,0 +1,15 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Wyandotte România",
+  "url": "https://wyandotte.ro",
+  "logo": "https://wyandotte.ro/images/cropped-Logopit_1592492900675-1.png",
+  "description": "Site dedicat rasei Wyandotte în România - informații despre rasă, galerie foto, articole și calendar evenimente",
+  "email": "contact@wyandotte.ro",
+  "sameAs": [],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "general inquiry",
+    "email": "contact@wyandotte.ro"
+  }
+}
