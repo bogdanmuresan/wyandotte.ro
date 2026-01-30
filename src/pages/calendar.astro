@@ -2,14 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const evenimente = await getCollection('evenimente');
-const sortedEvenimente = evenimente.sort((a, b) =>
+const events = await getCollection('evenimente');
+const sortedEvents = events.sort((a, b) =>
   a.data.date.getTime() - b.data.date.getTime()
 );
 
 const now = new Date();
-const viitoare = sortedEvenimente.filter(e => e.data.date >= now);
-const trecute = sortedEvenimente.filter(e => e.data.date < now).reverse();
+const upcoming = sortedEvents.filter(e => e.data.date >= now);
+const past = sortedEvents.filter(e => e.data.date < now).reverse();
 
 // Function to generate Google Calendar URL
 function generateGoogleCalendarUrl(event: any) {
@@ -38,13 +38,15 @@ function generateGoogleCalendarUrl(event: any) {
 
   <section class="content">
     <div class="container">
-      {evenimente.length > 0 ? (
+      {events.length > 0 ? (
         <>
-          {viitoare.length > 0 && (
+          {upcoming.length > 0 && (
             <div class="events-section">
               <h2>Evenimente viitoare</h2>
               <div class="events-list">
-                {viitoare.map((event) => (
+                {await Promise.all(upcoming.map(async (event) => {
+                  const { Content } = await event.render();
+                  return (
                   <article class="event-card upcoming">
                     <div class="event-date">
                       <span class="day">{event.data.date.getDate()}{event.data.endDate && event.data.endDate.getDate() !== event.data.date.getDate() ? `–${event.data.endDate.getDate()}` : ''}</span>
@@ -55,7 +57,9 @@ function generateGoogleCalendarUrl(event: any) {
                       <h3>{event.data.title}</h3>
                       <p class="date-range">📅 {event.data.date.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long' })}{event.data.endDate && event.data.endDate.getTime() !== event.data.date.getTime() ? ` – ${event.data.endDate.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long' })}` : ''}, {event.data.date.getFullYear()}</p>
                       <p class="location">📍 {event.data.location}</p>
-                      <p>{event.data.description}</p>
+                      <div class="event-content">
+                        <Content />
+                      </div>
                       {event.data.organizer && <p class="organizer">Organizator: {event.data.organizer}</p>}
                       <div class="event-actions">
                         <a href={generateGoogleCalendarUrl(event)} target="_blank" rel="noopener" class="btn btn-calendar">📅 Adaugă în calendar</a>
@@ -64,17 +68,23 @@ function generateGoogleCalendarUrl(event: any) {
                         )}
                       </div>
                     </div>
+                    {event.data.image && (
+                      <div class="event-image">
+                        <img src={event.data.image} alt={event.data.title} />
+                      </div>
+                    )}
                   </article>
-                ))}
+                  );
+                }))}
               </div>
             </div>
           )}
 
-          {trecute.length > 0 && (
+          {past.length > 0 && (
             <div class="events-section">
               <h2>Evenimente trecute</h2>
               <div class="events-list">
-                {trecute.map((event) => (
+                {past.map((event) => (
                   <article class="event-card past">
                     <div class="event-date">
                       <span class="day">{event.data.date.getDate()}</span>
@@ -110,7 +120,33 @@ function generateGoogleCalendarUrl(event: any) {
       </div>
     </div>
   </section>
+
+  <div id="lightbox" class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
 </BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const eventImages = document.querySelectorAll('.event-image img');
+
+    eventImages.forEach(img => {
+      img.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox?.classList.add('active');
+      });
+    });
+
+    lightbox?.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  });
+</script>
 
 <style>
   .page-header {
@@ -188,6 +224,7 @@ function generateGoogleCalendarUrl(event: any) {
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     border: 1px solid #e5e7eb;
+    position: relative;
   }
 
   .event-card.upcoming {
@@ -196,6 +233,62 @@ function generateGoogleCalendarUrl(event: any) {
 
   .event-card.past {
     opacity: 0.7;
+  }
+
+  .event-image {
+    width: 200px;
+    min-width: 200px;
+    height: 280px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f8f9fa;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .event-image:hover {
+    transform: scale(1.02);
+  }
+
+  .event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+
+  .lightbox.active {
+    display: flex;
+  }
+
+  .lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
   }
 
   .event-date {
@@ -247,6 +340,38 @@ function generateGoogleCalendarUrl(event: any) {
   .location {
     color: #666;
     margin-bottom: 0.75rem;
+  }
+
+  .event-content {
+    margin: 1rem 0;
+    line-height: 1.7;
+  }
+
+  .event-content :global(h2) {
+    font-size: 1.3rem;
+    color: #1a1a1a;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .event-content :global(h3) {
+    font-size: 1.1rem;
+    color: #374151;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-content :global(ul) {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .event-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .event-content :global(strong) {
+    color: #1a1a1a;
   }
 
   .organizer {

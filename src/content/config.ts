@@ -32,6 +32,7 @@ const evenimenteCollection = defineCollection({
     type: z.enum(['expozitie', 'intalnire', 'conferinta', 'altele']),
     organizer: z.string().optional(),
     url: z.string().url().optional(),
+    image: z.string().optional(),
   }),
 });
 
