@@ -25,9 +25,14 @@ function generateGoogleCalendarUrl(event: any) {
 
 <BaseLayout title="Calendar" description="Calendar expoziții și evenimente Wyandotte România">
   <section class="page-header">
-    <div class="container">
-      <h1>Calendar Evenimente</h1>
-      <p>Expoziții și întâlniri Clubul Wyandotte</p>
+    <div class="header-image">
+      <img src="/images/fbp.jpg" alt="Wyandotte" />
+    </div>
+    <div class="header-content">
+      <div class="container">
+        <h1>Calendar Evenimente</h1>
+        <p>Expoziții și întâlniri Clubul Wyandotte</p>
+      </div>
     </div>
   </section>
 
@@ -110,16 +115,41 @@ function generateGoogleCalendarUrl(event: any) {
 <style>
   .page-header {
     background: #ffffff;
-    color: #1a1a1a;
+    padding: 0;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .header-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .header-content {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.9) 100%);
     padding: 3rem 2rem;
     text-align: center;
-    border-bottom: 1px solid #e5e7eb;
   }
 
   .page-header h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
     font-weight: 700;
+    color: #1a1a1a;
   }
 
   .page-header p {
