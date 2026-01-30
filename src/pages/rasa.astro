@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Rasa Wyandotte" description="Informații complete despre rasa Wyandotte: istoric, caracteristici, varietăți și standard">
+  <section class="page-header">
+    <div class="container">
+      <h1>Rasa Wyandotte</h1>
+      <p>Caracteristici, varietăți și standardul rasei</p>
+    </div>
+  </section>
+
+  <section class="tabs-section">
+    <div class="container">
+      <div class="tabs">
+        <a href="/rasa/standard" class="tab active">Standardul rasei</a>
+        <a href="/rasa/istoric" class="tab">Istoric</a>
+        <a href="/rasa/caracteristici" class="tab">Caracteristici</a>
+        <a href="/rasa/varietati" class="tab">Varietăți</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      <p>Selectați o secțiune din taburile de mai sus pentru a vedea informații detaliate despre rasa Wyandotte.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Redirect to standard page on load
+  window.location.href = '/rasa/standard';
+</script>
+
+<style>
+  .page-header {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .page-header p {
+    color: #6b7280;
+  }
+
+  .tabs-section {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 1rem 1.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    color: #2563eb;
+    background: #f8f9fa;
+  }
+
+  .tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+  }
+
+  .content {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .content-section, .placeholder {
+    margin-bottom: 3rem;
+  }
+
+  .content-section h2, .placeholder h2 {
+    color: #1a1a1a;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .placeholder ul {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .placeholder li {
+    margin-bottom: 0.5rem;
+  }
+
+  .note {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    padding: 1rem;
+    margin-top: 2rem;
+    font-style: italic;
+  }
+</style>

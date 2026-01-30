@@ -1,0 +1,308 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const evenimente = await getCollection('evenimente');
+const sortedEvenimente = evenimente.sort((a, b) =>
+  a.data.date.getTime() - b.data.date.getTime()
+);
+
+const now = new Date();
+const viitoare = sortedEvenimente.filter(e => e.data.date >= now);
+const trecute = sortedEvenimente.filter(e => e.data.date < now).reverse();
+
+// Function to generate Google Calendar URL
+function generateGoogleCalendarUrl(event: any) {
+  const startDate = event.data.date.toISOString().replace(/[-:]/g, '').split('.')[0];
+  const endDate = (event.data.endDate || event.data.date).toISOString().replace(/[-:]/g, '').split('.')[0];
+  const title = encodeURIComponent(event.data.title);
+  const details = encodeURIComponent(event.data.description || '');
+  const location = encodeURIComponent(event.data.location);
+
+  return `https://calendar.google.com/calendar/u/0/r/eventedit?text=${title}&dates=${startDate}/${endDate}&location=${location}&details=${details}`;
+}
+---
+
+<BaseLayout title="Calendar" description="Calendar expoziții și evenimente Wyandotte România">
+  <section class="page-header">
+    <div class="container">
+      <h1>Calendar Evenimente</h1>
+      <p>Expoziții și întâlniri Clubul Wyandotte</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      {evenimente.length > 0 ? (
+        <>
+          {viitoare.length > 0 && (
+            <div class="events-section">
+              <h2>Evenimente viitoare</h2>
+              <div class="events-list">
+                {viitoare.map((event) => (
+                  <article class="event-card upcoming">
+                    <div class="event-date">
+                      <span class="day">{event.data.date.getDate()}{event.data.endDate && event.data.endDate.getDate() !== event.data.date.getDate() ? `–${event.data.endDate.getDate()}` : ''}</span>
+                      <span class="month">{event.data.date.toLocaleDateString('ro-RO', { month: 'short' })}</span>
+                      <span class="year">{event.data.date.getFullYear()}</span>
+                    </div>
+                    <div class="event-details">
+                      <h3>{event.data.title}</h3>
+                      <p class="date-range">📅 {event.data.date.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long' })}{event.data.endDate && event.data.endDate.getTime() !== event.data.date.getTime() ? ` – ${event.data.endDate.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long' })}` : ''}, {event.data.date.getFullYear()}</p>
+                      <p class="location">📍 {event.data.location}</p>
+                      <p>{event.data.description}</p>
+                      {event.data.organizer && <p class="organizer">Organizator: {event.data.organizer}</p>}
+                      <div class="event-actions">
+                        <a href={generateGoogleCalendarUrl(event)} target="_blank" rel="noopener" class="btn btn-calendar">📅 Adaugă în calendar</a>
+                        {event.data.url && (
+                          <a href={event.data.url} target="_blank" rel="noopener" class="btn">Mai multe detalii →</a>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {trecute.length > 0 && (
+            <div class="events-section">
+              <h2>Evenimente trecute</h2>
+              <div class="events-list">
+                {trecute.map((event) => (
+                  <article class="event-card past">
+                    <div class="event-date">
+                      <span class="day">{event.data.date.getDate()}</span>
+                      <span class="month">{event.data.date.toLocaleDateString('ro-RO', { month: 'short' })}</span>
+                    </div>
+                    <div class="event-details">
+                      <h3>{event.data.title}</h3>
+                      <p class="location">📍 {event.data.location}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      ) : (
+        <div class="placeholder">
+          <p>Calendarul de evenimente va fi actualizat în curând cu:</p>
+          <ul>
+            <li>Expoziții avicolă naționale și internaționale</li>
+            <li>Întâlniri ale Clubului Wyandotte</li>
+            <li>Conferințe și workshop-uri</li>
+            <li>Alte evenimente relevante pentru crescători</li>
+          </ul>
+        </div>
+      )}
+
+      <div class="submit-events">
+        <h3>Aveți informații despre o expoziție?</h3>
+        <p>Dacă cunoașteți o expoziție avicolă sau alt eveniment relevant pentru crescătorii de Wyandotte, vă rugăm să ne trimiteți detaliile la:</p>
+        <p class="email-link"><a href="mailto:expozitii@wyandotte.ro">expozitii@wyandotte.ro</a></p>
+        <p>Vom publica informațiile pe acest site cât mai curând posibil!</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .page-header p {
+    color: #6b7280;
+  }
+
+  .content {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .events-section {
+    margin-bottom: 3rem;
+  }
+
+  .events-section h2 {
+    color: #1a1a1a;
+    margin-bottom: 1.5rem;
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .event-card {
+    display: flex;
+    gap: 1.5rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border: 1px solid #e5e7eb;
+  }
+
+  .event-card.upcoming {
+    border-left: 4px solid #2563eb;
+  }
+
+  .event-card.past {
+    opacity: 0.7;
+  }
+
+  .event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .day {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1a1a1a;
+    line-height: 1;
+  }
+
+  .month {
+    font-size: 0.9rem;
+    color: #666;
+    text-transform: uppercase;
+  }
+
+  .year {
+    font-size: 0.85rem;
+    color: #999;
+    margin-top: 0.25rem;
+  }
+
+  .date-range {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .event-details {
+    flex: 1;
+  }
+
+  .event-details h3 {
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+  }
+
+  .location {
+    color: #666;
+    margin-bottom: 0.75rem;
+  }
+
+  .organizer {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.5rem;
+  }
+
+  .event-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn-calendar {
+    background: #10b981;
+    border: none;
+  }
+
+  .btn-calendar:hover {
+    background: #059669;
+  }
+
+  .btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
+  .placeholder {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .placeholder ul {
+    text-align: left;
+    max-width: 500px;
+    margin: 2rem auto;
+  }
+
+  .placeholder li {
+    margin-bottom: 0.5rem;
+  }
+
+  .submit-events {
+    background: #eff6ff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .submit-events h3 {
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .submit-events p {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .email-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+  }
+
+  .email-link a:hover {
+    color: #1d4ed8;
+  }
+</style>

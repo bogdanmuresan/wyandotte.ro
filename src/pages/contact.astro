@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact" description="Contact Wyandotte România">
+  <section class="page-header">
+    <div class="container">
+      <h1>Contact</h1>
+      <p>Informații de contact și linkuri utile</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      <div class="contact-info">
+        <h2>Despre acest site</h2>
+        <p>
+          Wyandotte România este un site informativ dedicat promovării rasei Wyandotte în România.
+          Proiectul își propune să ofere un punct de referință clar și bine organizat pentru crescătorii și
+          pasionații de Wyandotte.
+        </p>
+
+        <h2>Clubul Wyandotte România</h2>
+        <p>
+          Pentru informații oficiale despre Clubul Wyandotte și pentru a deveni membru, vă rugăm să contactați
+          direct clubul prin canalele oficiale.
+        </p>
+
+        <h3>Telefon</h3>
+        <ul class="phone-list">
+          <li><a href="tel:+36709305558">+36 70 930 5558</a></li>
+          <li><a href="tel:+40741225192">+40 741 225 192</a></li>
+          <li><a href="tel:+40754077339">+40 754 077 339</a></li>
+        </ul>
+
+        <h2>Resurse utile</h2>
+        <ul>
+          <li>Federația Avicolă Română</li>
+          <li>Grupuri și forumuri de discuții</li>
+          <li>Resurse internaționale despre Wyandotte</li>
+        </ul>
+
+        <p class="note">
+          Linkurile către resurse externe și informațiile de contact vor fi actualizate în curând.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .page-header p {
+    color: #6b7280;
+  }
+
+  .content {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .contact-info h2 {
+    color: #1a1a1a;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .contact-info h2:first-child {
+    margin-top: 0;
+  }
+
+  .contact-info ul {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .phone-list a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .phone-list a:hover {
+    color: #1d4ed8;
+  }
+
+  .contact-info li {
+    margin-bottom: 0.5rem;
+  }
+
+  .note {
+    background: #eff6ff;
+    border-left: 4px solid #2563eb;
+    padding: 1rem;
+    margin-top: 2rem;
+  }
+</style>

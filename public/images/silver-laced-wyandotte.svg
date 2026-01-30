@@ -1,0 +1,49 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#f5f5f5"/>
+  
+  <!-- Chicken body -->
+  <ellipse cx="200" cy="180" rx="80" ry="70" fill="#2a2a2a"/>
+  
+  <!-- Head -->
+  <circle cx="200" cy="100" r="35" fill="#2a2a2a"/>
+  
+  <!-- Comb -->
+  <path d="M 200 65 Q 210 45 200 35 Q 190 45 200 65" fill="#c41e3a"/>
+  
+  <!-- Eye -->
+  <circle cx="215" cy="95" r="5" fill="#ffd700"/>
+  
+  <!-- Beak -->
+  <polygon points="230,100 250,98 230,105" fill="#d4af37"/>
+  
+  <!-- Wattle -->
+  <ellipse cx="185" cy="115" rx="8" ry="12" fill="#c41e3a"/>
+  
+  <!-- Wing with silver lace pattern -->
+  <ellipse cx="150" cy="175" rx="50" ry="45" fill="#c0c0c0"/>
+  
+  <!-- Lace pattern on wing -->
+  <circle cx="140" cy="165" r="8" fill="#2a2a2a" opacity="0.6"/>
+  <circle cx="155" cy="170" r="8" fill="#2a2a2a" opacity="0.6"/>
+  <circle cx="145" cy="185" r="8" fill="#2a2a2a" opacity="0.6"/>
+  <circle cx="160" cy="190" r="8" fill="#2a2a2a" opacity="0.6"/>
+  <circle cx="150" cy="200" r="8" fill="#2a2a2a" opacity="0.6"/>
+  
+  <!-- Tail feathers -->
+  <path d="M 120 160 Q 80 120 70 80" stroke="#1a1a1a" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M 120 160 Q 70 130 50 110" stroke="#1a1a1a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  
+  <!-- Legs -->
+  <line x1="190" y1="245" x2="185" y2="280" stroke="#d4af37" stroke-width="4"/>
+  <line x1="210" y1="245" x2="215" y2="280" stroke="#d4af37" stroke-width="4"/>
+  
+  <!-- Feet -->
+  <circle cx="185" cy="285" r="6" fill="#d4af37"/>
+  <circle cx="215" cy="285" r="6" fill="#d4af37"/>
+  
+  <!-- Text -->
+  <text x="200" y="320" font-size="16" text-anchor="middle" fill="#1a1a1a" font-family="Arial">
+    Silver Laced Wyandotte
+  </text>
+</svg>

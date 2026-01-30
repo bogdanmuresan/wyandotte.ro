@@ -1,0 +1,203 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Site dedicat rasei Wyandotte în România" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
+  <title>{title} | Wyandotte România</title>
+  <link rel="icon" type="image/png" href="/images/cropped-Logopit_1592492900675-1.png">
+</head>
+<body>
+  <header>
+    <nav>
+      <div class="container">
+        <a href="/" class="logo-link">
+          <img src="/images/cropped-Logopit_1592492900675-1.png" alt="Wyandotte România" class="logo">
+          <span>Wyandotte România</span>
+        </a>
+        <ul>
+          <li><a href="/">Acasă</a></li>
+          <li><a href="/rasa">Rasa</a></li>
+          <li><a href="/galerie">Galerie</a></li>
+          <li><a href="/articole">Articole</a></li>
+          <li><a href="/calendar">Calendar</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer>
+    <div class="container">
+      <img src="/images/cropped-Logopit_1592492900675-1.png" alt="Wyandotte România" class="footer-logo">
+      <p class="footer-credit">Un proiect <a href="https://bogdanmuresan.ro" target="_blank" rel="noopener">bogdanmuresan.ro</a> în colaborare cu Wyandotte Club România</p>
+      <p>&copy; {new Date().getFullYear()} Wyandotte România. Site informativ dedicat rasei Wyandotte.</p>
+    </div>
+  </footer>
+
+  <style>
+    :global(*) {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :global(body) {
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #f8f9fa;
+    }
+
+    :global(p) {
+      margin-bottom: 1.25rem;
+    }
+
+    :global(ul), :global(ol) {
+      padding-left: 2rem;
+    }
+
+    header {
+      background: #ffffff;
+      color: #1a1a1a;
+      padding: 1rem 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #1a1a1a;
+      text-decoration: none;
+      transition: opacity 0.3s;
+      font-weight: 600;
+    }
+
+    .logo-link:hover {
+      opacity: 0.8;
+    }
+
+    .logo-link img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    nav ul a {
+      color: #1a1a1a;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      display: block;
+    }
+
+    nav ul a:hover {
+      color: #2563eb;
+      background: #f1f5f9;
+    }
+
+    main {
+      min-height: calc(100vh - 200px);
+    }
+
+    footer {
+      background: #ffffff;
+      color: #1a1a1a;
+      padding: 2rem 0;
+      margin-top: 4rem;
+      text-align: center;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .footer-logo {
+      height: 60px;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+    }
+
+    .footer-credit {
+      font-size: 1.1rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-credit a {
+      color: #2563eb;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-credit a:hover {
+      color: #1d4ed8;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    footer .container {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      nav .container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      nav ul {
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+      }
+    }
+  </style>
+</body>
+</html>

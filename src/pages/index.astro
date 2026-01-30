@@ -1,0 +1,401 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+// Fetch recent articles
+const articole = await getCollection('articole');
+const recentArticles = articole
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+// Fetch upcoming events
+const evenimente = await getCollection('evenimente');
+const now = new Date();
+const upcomingEvents = evenimente
+  .filter(e => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Acasă">
+  <section class="hero">
+    <div class="container">
+      <h1>Bun venit la Wyandotte România</h1>
+      <p class="subtitle">Site informativ dedicat rasei Wyandotte</p>
+      <p>Un punct de referință clar și bine organizat pentru crescătorii și pasionații de Wyandotte din România.</p>
+    </div>
+  </section>
+
+  <section class="intro">
+    <div class="container">
+      <h2>Despre rasă</h2>
+      <p>
+        Wyandotte este o rasă de găini originară din America de Nord, cunoscută pentru forma sa rotundă caracteristică,
+        pene bogate și personalitate prietenoasă. Este apreciată atât pentru calitățile ornamentale, cât și pentru
+        producția de ouă și carne.
+      </p>
+      <a href="/rasa" class="btn">Află mai multe despre rasă →</a>
+    </div>
+  </section>
+
+  {recentArticles.length > 0 && (
+    <section class="recent-articles">
+      <div class="container">
+        <h2>Articole recente</h2>
+        <div class="cards-grid">
+          {recentArticles.map((article) => (
+            <a href={`/articole/${article.slug}`} class="card">
+              {article.data.image && (
+                <div class="card-image">
+                  <img src={article.data.image} alt={article.data.title} />
+                </div>
+              )}
+              <div class="card-content">
+                <h3>{article.data.title}</h3>
+                <p class="card-meta">{article.data.pubDate.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                <p class="card-description">{article.data.description}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div class="section-footer">
+          <a href="/articole" class="btn-secondary">Vezi toate articolele →</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {upcomingEvents.length > 0 && (
+    <section class="upcoming-events">
+      <div class="container">
+        <h2>Evenimente viitoare</h2>
+        <div class="cards-grid">
+          {upcomingEvents.map((event) => (
+            <div class="card event-card">
+              <div class="event-date-badge">
+                <span class="date-day">{event.data.date.getDate()}{event.data.endDate && event.data.endDate.getDate() !== event.data.date.getDate() ? `–${event.data.endDate.getDate()}` : ''}</span>
+                <span class="date-month">{event.data.date.toLocaleDateString('ro-RO', { month: 'short' })}</span>
+              </div>
+              <div class="card-content">
+                <h3>{event.data.title}</h3>
+                <p class="card-meta">📍 {event.data.location}</p>
+                <p class="card-description">{event.data.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div class="section-footer">
+          <a href="/calendar" class="btn-secondary">Vezi calendarul complet →</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="features">
+    <div class="container">
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>📚 Informații despre rasă</h3>
+          <p>Istoric, caracteristici, varietăți și standardul rasei explicat detaliat</p>
+        </div>
+        <div class="feature">
+          <h3>📸 Galerii foto</h3>
+          <p>Imagini de la expoziții și exemple reprezentative ale rasei</p>
+        </div>
+        <div class="feature">
+          <h3>📅 Calendar evenimente</h3>
+          <p>Expoziții și evenimente organizate de Clubul Wyandotte</p>
+        </div>
+        <div class="feature">
+          <h3>✍️ Articole și ghiduri</h3>
+          <p>Resurse utile și sfaturi pentru crescători</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="submit-info">
+    <div class="container">
+      <div class="info-box">
+        <h3>Aveți informații sau sugestii?</h3>
+        <p>Dacă aveți informații utile, sugestii pentru site sau doriți să contribuiți cu conținut, vă rugăm să ne contactați la:</p>
+        <p class="email-link"><a href="mailto:website@wyandotte.ro">website@wyandotte.ro</a></p>
+        <p>Apreciem orice feedback și contribuție pentru îmbunătățirea acestui site!</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 4rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    color: #1a1a1a;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+    color: #6b7280;
+  }
+
+  .intro, .features, .recent-articles, .upcoming-events {
+    padding: 3rem 2rem;
+  }
+
+  .intro {
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .recent-articles {
+    background: #f8f9fa;
+  }
+
+  .upcoming-events {
+    background: white;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #1a1a1a;
+    position: relative;
+    padding-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #2563eb;
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s;
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .feature {
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .feature:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #2563eb;
+  }
+
+  .feature h3 {
+    color: #1a1a1a;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .card {
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #2563eb;
+  }
+
+  .card-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+  }
+
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card-content {
+    padding: 1.5rem;
+    flex: 1;
+  }
+
+  .card h3 {
+    color: #1a1a1a;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .card-meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-description {
+    color: #6b7280;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .event-card {
+    position: relative;
+    padding-left: 100px;
+  }
+
+  .event-date-badge {
+    position: absolute;
+    left: 1.5rem;
+    top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background: #2563eb;
+    border-radius: 8px;
+    color: white;
+  }
+
+  .date-day {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .date-month {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-top: 0.25rem;
+  }
+
+  .section-footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    color: #2563eb;
+    text-decoration: none;
+    border: 1px solid #2563eb;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .btn-secondary:hover {
+    background: #2563eb;
+    color: white;
+  }
+
+  .submit-info {
+    padding: 3rem 2rem;
+    background: #f8f9fa;
+  }
+
+  .info-box {
+    background: #eff6ff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .info-box h3 {
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .info-box p {
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-box .email-link a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+  }
+
+  .info-box .email-link a:hover {
+    color: #1d4ed8;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 1.8rem;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+    }
+  }
+</style>

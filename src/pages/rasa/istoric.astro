@@ -1,0 +1,145 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+
+const entry = await getEntry('rasa', 'istoric');
+const { Content } = await entry.render();
+---
+
+<BaseLayout title="Istoric Wyandotte" description="Istoria rasei Wyandotte">
+  <section class="page-header">
+    <div class="container">
+      <h1>Rasa Wyandotte</h1>
+      <p>Caracteristici, varietăți și standardul rasei</p>
+    </div>
+  </section>
+
+  <section class="tabs-section">
+    <div class="container">
+      <div class="tabs">
+        <a href="/rasa/standard" class="tab">Standardul rasei</a>
+        <a href="/rasa/istoric" class="tab active">Istoric</a>
+        <a href="/rasa/caracteristici" class="tab">Caracteristici</a>
+        <a href="/rasa/varietati" class="tab">Varietăți</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      <div class="info-box">
+        <p><strong>Notă:</strong> Conținutul acestei pagini a fost generat cu ajutorul inteligenței artificiale. Dacă aveți sugestii, corecții sau informații suplimentare, vă rugăm să ne scrieți la <a href="mailto:website@wyandotte.ro">website@wyandotte.ro</a>.</p>
+      </div>
+
+      <article class="content-section">
+        <h2>{entry.data.title}</h2>
+        <Content />
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .page-header p {
+    color: #6b7280;
+  }
+
+  .tabs-section {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0;
+  }
+
+  .tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 1rem 1.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    color: #2563eb;
+    background: #f8f9fa;
+  }
+
+  .tab.active {
+    color: #2563eb;
+    border-bottom-color: #2563eb;
+  }
+
+  .content {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .content-section {
+    margin-bottom: 3rem;
+  }
+
+  .info-box {
+    background: #fef3c7;
+    border-left: 4px solid #f59e0b;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+  }
+
+  .info-box p {
+    margin: 0;
+    color: #1a1a1a;
+  }
+
+  .info-box a {
+    color: #2563eb;
+    text-decoration: underline;
+  }
+
+  .content-section h2 {
+    color: #1a1a1a;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .content-section h2:first-child {
+    margin-top: 0;
+  }
+
+  .content-section :global(h3) {
+    color: #1a1a1a;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .content-section :global(p) {
+    margin-bottom: 1rem;
+  }
+</style>

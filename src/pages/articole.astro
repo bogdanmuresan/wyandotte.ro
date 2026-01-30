@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articole = await getCollection('articole');
+const sortedArticole = articole.sort((a, b) =>
+  b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
+---
+
+<BaseLayout title="Articole" description="Articole și ghiduri utile pentru crescătorii de Wyandotte">
+  <section class="page-header">
+    <div class="container">
+      <h1>Articole și ghiduri</h1>
+      <p>Resurse utile pentru crescători</p>
+    </div>
+  </section>
+
+  <section class="content">
+    <div class="container">
+      {sortedArticole.length > 0 ? (
+        <div class="articles-grid">
+          {sortedArticole.map((article) => (
+            <article class="article-card">
+              {article.data.image && (
+                <img src={article.data.image} alt={article.data.title} />
+              )}
+              <div class="article-content">
+                <h2>{article.data.title}</h2>
+                <p class="meta">
+                  {article.data.pubDate.toLocaleDateString('ro-RO')}
+                  {article.data.author && ` • ${article.data.author}`}
+                </p>
+                <p>{article.data.description}</p>
+                <a href={`/articole/${article.slug}`} class="btn">Citește mai mult →</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div class="placeholder">
+          <p>Articolele vor fi adăugate în curând. Aici veți găsi ghiduri despre:</p>
+          <ul>
+            <li>Creșterea și îngrijirea Wyandotte</li>
+            <li>Alimentație și nutriție</li>
+            <li>Selecție și îmbunătățire</li>
+            <li>Pregătirea pentru expoziții</li>
+            <li>Sănătate și boli comune</li>
+          </ul>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: #ffffff;
+    color: #1a1a1a;
+    padding: 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+  }
+
+  .page-header p {
+    color: #6b7280;
+  }
+
+  .content {
+    padding: 3rem 2rem;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .article-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    border: 1px solid #e5e7eb;
+  }
+
+  .article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-color: #2563eb;
+  }
+
+  .article-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .article-content {
+    padding: 1.5rem;
+  }
+
+  .article-card h2 {
+    color: #1a1a1a;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .meta {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    border: none;
+    font-weight: 500;
+  }
+
+  .btn:hover {
+    background: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+
+  .placeholder {
+    text-align: center;
+    padding: 3rem;
+  }
+
+  .placeholder ul {
+    text-align: left;
+    max-width: 500px;
+    margin: 2rem auto;
+  }
+
+  .placeholder li {
+    margin-bottom: 0.5rem;
+  }
+</style>
